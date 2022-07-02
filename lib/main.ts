@@ -1,0 +1,1 @@
+export { calculateMexicanRFC } from "./calculateMexicanRFC";

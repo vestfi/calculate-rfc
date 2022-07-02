@@ -1,0 +1,21 @@
+{
+  "name": "calculate-rfc",
+  "private": true,
+  "version": "0.0.0",
+  "files": [
+    "dist/calculateRfc.es.js",
+    "dist/calculateRfc.umd.js"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4",
+    "vite": "^2.9.9",
+    "vitest": "^0.16.0"
+  }
+}
