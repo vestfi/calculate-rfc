@@ -5,7 +5,7 @@ import {
   replaceDiacritics,
   getHomonymy,
   getRfcName,
-} from "./helpers";
+} from './helpers'
 
 /** Calculates the RFC of a "Persona Física" based on [these specs](https://docs.google.com/document/d/18wrQvI1WB41jp97Zme1qdePHI4TlqJh5bj9nZkJ3Lz0/edit) defined by the SAT.*/
 export const calculateMexicanRFC = ({
@@ -17,36 +17,36 @@ export const calculateMexicanRFC = ({
   day,
 }: {
   /** Name (including second name) */
-  name: string;
+  name: string
   /** Name derived from the father */
-  patronymic: string;
+  patronymic: string
   /** Name derived from the mother */
-  matronymic: string;
+  matronymic: string
 } & Parameters<typeof getRfcBirthdate>[0]) => {
-  const cleanName = replaceDiacritics(name).toLowerCase();
-  const cleanPatronymic = replaceDiacritics(patronymic).toLowerCase();
-  const cleanMatronymic = replaceDiacritics(matronymic).toLowerCase();
+  const cleanName = replaceDiacritics(name).toLowerCase()
+  const cleanPatronymic = replaceDiacritics(patronymic).toLowerCase()
+  const cleanMatronymic = replaceDiacritics(matronymic).toLowerCase()
 
-  const filteredName = filterRfcNames(cleanName);
-  const filteredPatronymic = filterRfcNames(cleanPatronymic);
-  const filteredMatronymic = filterRfcNames(cleanMatronymic);
+  const filteredName = filterRfcNames(cleanName)
+  const filteredPatronymic = filterRfcNames(cleanPatronymic)
+  const filteredMatronymic = filterRfcNames(cleanMatronymic)
 
   const rfcName = getRfcName(
     filteredName,
     filteredPatronymic,
-    filteredMatronymic
-  );
+    filteredMatronymic,
+  )
 
-  const rfcBirthdate = getRfcBirthdate({ year, month, day });
+  const rfcBirthdate = getRfcBirthdate({ year, month, day })
 
-  const homonymy = getHomonymy(cleanName, cleanPatronymic, cleanMatronymic);
+  const homonymy = getHomonymy(cleanName, cleanPatronymic, cleanMatronymic)
 
   const rfcWithoutVerificationCode =
-    `${rfcName}${rfcBirthdate}${homonymy}`.toUpperCase();
+    `${rfcName}${rfcBirthdate}${homonymy}`.toUpperCase()
 
-  const verificationCode = getVerificationCode(rfcWithoutVerificationCode);
+  const verificationCode = getVerificationCode(rfcWithoutVerificationCode)
 
-  const rfc = `${rfcWithoutVerificationCode}${verificationCode}`;
+  const rfc = `${rfcWithoutVerificationCode}${verificationCode}`
 
-  return rfc;
-};
+  return rfc
+}

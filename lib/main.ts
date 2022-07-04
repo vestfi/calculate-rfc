@@ -1,1 +1,1 @@
-export { calculateMexicanRFC } from "./calculateMexicanRFC";
+export { calculateMexicanRFC } from './calculateMexicanRFC'

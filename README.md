@@ -32,27 +32,28 @@ npm install @vestfi/calculate-rfc
 Import:
 
 ```ts
-import { calculateMexicanRFC } from "calculate-rfc";
+import { calculateMexicanRFC } from 'calculate-rfc'
 ```
 
 Require:
 
 ```ts
-const { calculateMexicanRFC } = require("calculate-rfc");
+const { calculateMexicanRFC } = require('calculate-rfc')
 ```
 
 Usage:
 
 ```ts
 const rfc = calculateMexicanRFC({
-  // date format: mm/dd/yyyy
-  birthdate: "10/09/1964",
-  name: "Guillermo",
-  patronymic: "Del Toro",
-  matronymic: "Gómez",
-});
+  name: 'Guillermo',
+  patronymic: 'Del Toro',
+  matronymic: 'Gómez',
+  year: '64',
+  month: '10',
+  day: '09',
+})
 
-console.log(rfc); // TOGG641009MGA
+console.log(rfc) // TOGG641009MGA
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
