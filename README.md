@@ -16,13 +16,13 @@ This project calculates a "Persona Física"'s RFC based on SAT's specifications 
 Yarn:
 
 ```sh
-yarn add edrpls/calculate-rfc
+yarn add @vestfi/calculate-rfc
 ```
 
 NPM:
 
 ```sh
-npm install edrpls/calculate-rfc
+npm install @vestfi/calculate-rfc
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -72,7 +72,7 @@ This README's structure is based off [Best-README-Template](https://github.com/o
 - [ ] Add tests for all SAT rules
 - [ ] Validate input birthdate format
 
-See the [open issues](https://github.com/edrpls/calculate-rfc/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/@vestfi/calculate-rfc/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -93,6 +93,6 @@ Thanks!
 
 ## License
 
-Distributed under the MIT License. See [`LICENSE`](https://github.com/edrpls/calculate-rfc/blob/main/LICENSE) for more information.
+Distributed under the MIT License. See [`LICENSE`](https://github.com/@vestfi/calculate-rfc/blob/main/LICENSE) for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
