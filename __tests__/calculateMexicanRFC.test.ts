@@ -15,6 +15,9 @@ import {
 } from "../lib/helpers";
 
 const fakeBirthdate = "10/09/1964";
+const [month, day, yyyy] = fakeBirthdate.split("/");
+const [, , decade, yearDigit] = yyyy.split("");
+const year = `${decade}${yearDigit}`;
 const fakeName = "Guillermo";
 const fakePatronymic = "Del Toro";
 const fakeMatronymic = "Gómez";
@@ -24,23 +27,16 @@ const expectedRFC = `TOGG${expectedRFCBirthdate}MGA`;
 
 describe("calculateMexicanRFC", () => {
   it("calculates a valid RFC", () => {
-    const rfc = calculateMexicanRFC({
-      birthdate: fakeBirthdate,
+    const rfc1 = calculateMexicanRFC({
+      month,
+      day,
+      year,
       name: fakeName,
       patronymic: fakePatronymic,
       matronymic: fakeMatronymic,
     });
 
-    expect(rfc).toBe(expectedRFC);
-
-    const rfc1 = calculateMexicanRFC({
-      birthdate: "10/09/1964",
-      name: "Guillermo",
-      patronymic: "Del Toro",
-      matronymic: "Gómez",
-    });
-
-    expect(rfc1).toBe("TOGG641009MGA");
+    expect(rfc1).toBe(expectedRFC);
   });
 
   it.todo("respects all rules set by SAT");
@@ -48,12 +44,19 @@ describe("calculateMexicanRFC", () => {
 
 describe("helpers", () => {
   describe("getRfcBirthdate", () => {
-    it("should transform the KYC birthdate() to the RFC format", () => {
-      const rfcBirthdate = getRfcBirthdate(fakeBirthdate);
+    it("should transform the KYC birthdate to the RFC format", () => {
+      const rfcBirthdate = getRfcBirthdate({ month, day, year });
       expect(rfcBirthdate).toBe(expectedRFCBirthdate);
     });
 
-    it.todo("should validate the input format");
+    it("should sanitize the input format", () => {
+      const rfcBirthdate = getRfcBirthdate({
+        month: "6",
+        day: "5",
+        year: "89",
+      });
+      expect(rfcBirthdate).toBe("890605");
+    });
   });
 
   describe("replaceDiacritics", () => {
