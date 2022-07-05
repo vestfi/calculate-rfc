@@ -5,6 +5,10 @@
   "files": [
     "dist"
   ],
+  "main": "dist/calculateRfc.umd.js",
+  "module": "dist/calculateRfc.es.js",
+  "types": "dist/main.d.ts",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
