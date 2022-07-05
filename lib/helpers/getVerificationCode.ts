@@ -38,9 +38,15 @@ export const getVerificationCode = (
     return 'A'
   }
 
-  if (verificationNumber < 10) {
-    return (VERIFICATION_CODE_DIVIDING_FACTOR - verificationNumber).toString()
+  if (verificationNumber <= 10) {
+    return returnVerificationNumber(
+      VERIFICATION_CODE_DIVIDING_FACTOR - verificationNumber,
+    ).toString()
   }
 
   return verificationNumber.toString()
 }
+
+/** If verification number is 10 we should return 'A' */
+const returnVerificationNumber = (verificationNumber: number) =>
+  verificationNumber === 10 ? 'A' : verificationNumber

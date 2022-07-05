@@ -37,7 +37,7 @@ const addPadding = (stringNumber: string) =>
   stringNumber.length === 1 ? `0${stringNumber}` : stringNumber
 
 /** Replaces diacritic vowels with a regular version */
-export const replaceDiacritics = (text: string) =>
+export const replaceDiacritics = (text = '') =>
   text
     .split('')
     .map((letter) => diacriticMap[letter as Diacritic] ?? letter)

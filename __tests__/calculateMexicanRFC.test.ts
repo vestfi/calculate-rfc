@@ -1,134 +1,316 @@
-import { describe, it, expect, test } from 'vitest'
-
-import { forbiddenWordCases } from '../mocks/forbiddenWordCases'
+import { describe, it, test, expect } from 'vitest'
+import { forbiddenWordsString } from '../lib/constants'
 
 import { calculateMexicanRFC } from '../lib/main'
+import { forbiddenWordCases } from '../mocks/forbiddenWordCases'
 
-import {
-  filterRfcNames,
-  getHomonymy,
-  getRfcBirthdate,
-  getRfcName,
-  getVerificationCode,
-  replaceDiacritics,
-  simplifyComposedCharacters,
-} from '../lib/helpers'
+const case1 = {
+  name: 'Juan',
+  patronymic: 'Barrios',
+  matronymic: 'Fernández',
+  month: '12',
+  day: '13',
+  year: '1970',
+} as const
 
-const fakeBirthdate = '10/09/1964'
-const [month, day, yyyy] = fakeBirthdate.split('/')
-const [, , decade, yearDigit] = yyyy.split('')
-const year = `${decade}${yearDigit}`
-const fakeName = 'Guillermo'
-const fakePatronymic = 'Del Toro'
-const fakeMatronymic = 'Gómez'
+const case2 = {
+  name: 'Eva',
+  patronymic: 'Iriarte',
+  matronymic: 'Méndez',
+  month: '11',
+  day: '17',
+  year: '69',
+} as const
 
-const expectedRFCBirthdate = '641009'
-const expectedRFC = `TOGG${expectedRFCBirthdate}MGA`
+const simpleCharsCase1 = {
+  name: 'Manuel',
+  patronymic: 'Chávez',
+  matronymic: 'González',
+  month: '6',
+  day: '18',
+  year: '24',
+} as const
+
+const simpleCharsCase2 = {
+  name: 'Felipe',
+  patronymic: 'Camargo',
+  matronymic: 'Llamas',
+  month: '2',
+  day: '28',
+  year: '1945',
+} as const
+
+const shortLastNameCase1 = {
+  name: 'Alvaro',
+  patronymic: 'de la O',
+  matronymic: 'Lozano',
+  month: '12',
+  day: '1',
+  year: '1940',
+} as const
+
+const shortLastNameCase2 = {
+  name: 'Ernesto',
+  patronymic: 'Ek',
+  matronymic: 'Rivera',
+  month: '11',
+  day: '20',
+  year: '07',
+} as const
+
+const composedLastNameCase1 = {
+  name: 'Dolores',
+  patronymic: 'San Martín',
+  matronymic: 'Dávalos',
+  month: '08',
+  day: '12',
+  year: '18',
+} as const
+
+const composedLastNameCase2 = {
+  name: 'Mario',
+  patronymic: 'Sánchez de la Barquera',
+  matronymic: 'Gómez',
+  month: '2',
+  day: '24',
+  year: '19',
+} as const
+
+const composedNameCase1 = {
+  name: 'Luz María',
+  patronymic: 'Fernández',
+  matronymic: 'Juárez',
+  month: '2',
+  day: '5',
+  year: '20',
+} as const
+
+const composedNameCase2 = {
+  name: 'José Antonio',
+  patronymic: 'Camargo ',
+  matronymic: 'Hernández',
+  month: '12',
+  day: '18',
+  year: '21',
+} as const
+
+const singleLastNameCase1 = {
+  name: 'Juan',
+  patronymic: 'Martínez ',
+  month: '1',
+  day: '16',
+  year: '42',
+} as const
+
+const singleLastNameCase2 = {
+  name: 'Gerardo',
+  matronymic: 'Zafra',
+  month: '11',
+  day: '15',
+  year: '25',
+} as const
+
+const prepositionCase1 = {
+  name: 'Carmen',
+  patronymic: 'de la Peña',
+  matronymic: 'Ramírez',
+  month: '12',
+  day: '1',
+  year: '63',
+} as const
+
+const prepositionCase2 = {
+  name: 'Mario',
+  patronymic: 'Sánchez',
+  matronymic: 'de los Cobos',
+  month: '11',
+  day: '10',
+  year: '70',
+} as const
+
+const specialCharsCase1 = {
+  name: 'Roberto',
+  patronymic: 'O’farril',
+  matronymic: 'Carballo',
+  month: '11',
+  day: '21',
+  year: '66',
+} as const
+
+const specialCharsCase2 = {
+  name: 'Rubén',
+  patronymic: 'D’angelo',
+  matronymic: 'Fargo',
+  month: '1',
+  day: '08',
+  year: '71',
+} as const
 
 describe('calculateMexicanRFC', () => {
-  it('calculates a valid RFC', () => {
-    const rfc1 = calculateMexicanRFC({
-      month,
-      day,
-      year,
-      name: fakeName,
-      patronymic: fakePatronymic,
-      matronymic: fakeMatronymic,
+  const rfc1 = calculateMexicanRFC(case1)
+  const rfc2 = calculateMexicanRFC(case2)
+
+  /**
+   * REGLA 1ª.
+   * Se integra la clave con los siguientes datos:
+   * 1.	La primera letra del apellido paterno y la siguiente primera vocal del mismo.
+   * 2.	La primera letra del apellido materno.
+   * 3.	La primera letra del nombre.
+   */
+  describe('rule 1', () => {
+    it('includes the first character and the first vowel of the patronymic', () => {
+      expect(rfc1).toMatch(/^BA/)
+      expect(rfc2).toMatch(/^II/)
     })
 
-    expect(rfc1).toBe(expectedRFC)
-  })
-
-  it.todo('respects all rules set by SAT')
-})
-
-describe('helpers', () => {
-  describe('getRfcBirthdate', () => {
-    it('should transform the KYC birthdate to the RFC format', () => {
-      const rfcBirthdate = getRfcBirthdate({ month, day, year })
-      expect(rfcBirthdate).toBe(expectedRFCBirthdate)
+    it('includes the first letter of the matronymic', () => {
+      expect(rfc1.charAt(2)).toBe('F')
+      expect(rfc2.charAt(2)).toBe('M')
     })
 
-    it('should sanitize the input format', () => {
-      const rfcBirthdate = getRfcBirthdate({
-        month: '6',
-        day: '5',
-        year: '89',
-      })
-      expect(rfcBirthdate).toBe('890605')
+    it('includes the first letter of the name', () => {
+      expect(rfc1.charAt(3)).toBe('J')
+      expect(rfc2.charAt(3)).toBe('E')
     })
   })
 
-  describe('replaceDiacritics', () => {
-    it('should replace accented characters with their regular counterpart', () => {
-      const result = replaceDiacritics(fakeMatronymic)
-      expect(result).toBe('Gomez')
+  /**
+   * REGLA 2ª.
+   * A continuación se anotará la fecha de nacimiento del contribuyente, en el siguiente orden:
+   * Año: Se tomarán las dos últimas cifras, escribiéndolas con números arábigos.
+   * Mes: Se tomará el mes de nacimiento en su número de orden, en un año de calendario, escribiéndolo con números arábigos.
+   * Día: Se escribirá con números arábigos.
+   */
+  describe('rule 2', () => {
+    it('includes the birthdate as yymmdd', () => {
+      const date1 = rfc1.slice(4, -3)
+      expect(date1).toBe('701213')
+
+      const date2 = rfc2.slice(4, -3)
+      expect(date2).toBe('691117')
     })
   })
 
-  describe('filterUnnecessaryWords', () => {
-    it('should remove unnecessary words from a string', () => {
-      const filteredName = filterRfcNames('jose maria')
-      const filteredPatronymic = filterRfcNames('de la concepcion')
-      const filteredMatronymic = filterRfcNames('von perez')
+  /**
+   * REGLA 3ª.
+   * Cuando la letra inicial de cualquiera de los apellidos o nombre sea compuesta, únicamente se anotará la inicial de ésta. En la Ch la C y en la Ll la L.
+   */
+  describe('rule 3', () => {
+    it('ignores the second character of Ch and Ll', () => {
+      const simpleCharsRfc1 = calculateMexicanRFC(simpleCharsCase1)
+      const simpleCharsRfc2 = calculateMexicanRFC(simpleCharsCase2)
 
-      expect(filteredName).toBe('maria')
-      expect(filteredPatronymic).toBe('concepcion')
-      expect(filteredMatronymic).toBe('perez')
+      expect(simpleCharsRfc1).toMatch(/^CAGM240618/)
+      expect(simpleCharsRfc2).toMatch(/^CALF450228/)
     })
   })
 
-  describe('simplifyComposedCharacters', () => {
-    it('should remove unnecessary words from a string', () => {
-      const result1 = simplifyComposedCharacters('chal')
-      expect(result1).toBe('cal')
-      const result2 = simplifyComposedCharacters('llano')
-      expect(result2).toBe('lano')
+  /**
+   * REGLA 4ª.
+   * En los casos en que el apellido paterno de la persona física se componga de una o dos letras, la clave se formará de la siguiente manera:
+   * 1.	La primera letra del apellido paterno.
+   * 2.	La primera letra del apellido materno.
+   * 3.	La primera y segunda letra del nombre.
+   */
+  describe('rule 4', () => {
+    it('handles patronymics of two or less characters', () => {
+      const shortLastNameRfc1 = calculateMexicanRFC(shortLastNameCase1)
+      const shortLastNameRfc2 = calculateMexicanRFC(shortLastNameCase2)
+
+      expect(shortLastNameRfc1).toMatch(/^OLAL401201/)
+      expect(shortLastNameRfc2).toMatch(/^ERER071120/)
     })
   })
 
-  describe('getRfcName', () => {
-    it('should get the name portion for a short patronymic', () => {
-      const result = getRfcName('edgar oscar', 'sa', 'palacio')
-      expect(result).toBe('sped')
+  /**
+   * REGLA 5ª.
+   * Cuando el apellido paterno o materno sean compuestos, se tomará para la clasificación la primera palabra que corresponda a cualquiera de ellos.
+   */
+  describe('rule 5', () => {
+    it('handles composed last names', () => {
+      const composedLastNamesRfc1 = calculateMexicanRFC(composedLastNameCase1)
+      const composedLastNamesRfc2 = calculateMexicanRFC(composedLastNameCase2)
+
+      expect(composedLastNamesRfc1).toMatch(/^SADD180812/)
+      expect(composedLastNamesRfc2).toMatch(/^SAGM190224/)
     })
+  })
 
-    it('should get the name portion for a regular patronymic', () => {
-      const result1 = getRfcName('guilltermo', 'toro', 'gomez')
-      expect(result1).toBe('togg')
+  /**
+   * REGLA 6ª.
+   * Cuando el nombre es compuesto, o sea, que esta formado por dos o más palabras, se tomará para la conformación la letra inicial de la primera, siempre que no sea MARIA o JOSE dado su frecuente uso, en cuyo caso se tomará la primera letra de la segunda palabra.
+   */
+  describe('rule 6', () => {
+    it('handles composed names and ignores Maria and Jose', () => {
+      const composedNamesRfc1 = calculateMexicanRFC(composedNameCase1)
+      const composedNamesRfc2 = calculateMexicanRFC(composedNameCase2)
 
-      const result2 = getRfcName('edgar', 'ovidio', 'sandoval')
-      expect(result2).toBe('oise')
+      expect(composedNamesRfc1).toMatch(/^FEJL200205/)
+      expect(composedNamesRfc2).toMatch(/^CAHA211218/)
     })
+  })
 
-    it('should get the name portion for a single last name (matronymic)', () => {
-      const result1 = getRfcName('guillermo', undefined, 'gomez')
-      expect(result1).toBe('gogu')
+  /**
+   * REGLA 7ª.
+   * En los casos en que la persona física tenga un solo apellido, se conformará con la primera y segunda letras del apellido paterno o materno, según figure en el acta de nacimiento, más la primera y segunda letras del nombre.
+   */
+  describe('rule 7', () => {
+    it('handles single last names', () => {
+      const singleLastNameRfc1 = calculateMexicanRFC(singleLastNameCase1)
+      const singleLastNameRfc2 = calculateMexicanRFC(singleLastNameCase2)
+
+      expect(singleLastNameRfc1).toMatch(/^MAJU420116/)
+      expect(singleLastNameRfc2).toMatch(/^ZAGE251115/)
     })
+  })
 
-    it('should get the name portion for a single last name (patronymic)', () => {
-      const result1 = getRfcName('guillermo', 'toro')
-      expect(result1).toBe('togu')
+  /**
+   * REGLA 8ª.
+   * Cuando en el nombre de las personas físicas figuren artículos, preposiciones, conjunciones o contracciones no se tomarán como elementos de integración de la clave, ejemplos:
+   */
+  describe('rule 8', () => {
+    it('ignores prepositions', () => {
+      const prepositionRfc1 = calculateMexicanRFC(prepositionCase1)
+      const prepositionRfc2 = calculateMexicanRFC(prepositionCase2)
+
+      expect(prepositionRfc1).toMatch(/^PERC631201/)
+      expect(prepositionRfc2).toMatch(/^SACM701110/)
     })
+  })
 
+  /**
+   * REGLA 9ª.
+   * Cuando de las cuatro letras que formen la expresión alfabética, resulte una palabra inconveniente, la ultima letra será sustituida por una  “ X “.
+   */
+  describe('rule 9', () => {
     test.each(forbiddenWordCases)(
       'given %p %p %p returns %p',
       // eslint-disable-next-line max-params
-      (name = '', patronymic, matronymic, expected) => {
-        expect(getRfcName(name, patronymic, matronymic)).toBe(expected)
+      (name = '', patronymic = '', matronymic = '') => {
+        const firstFourChars = calculateMexicanRFC({
+          name,
+          patronymic,
+          matronymic,
+          month: '12',
+          day: '1',
+          year: '63',
+        }).slice(0, 4)
+        expect(forbiddenWordsString).not.toMatch(firstFourChars)
       },
     )
   })
 
-  describe('getHomonymy', () => {
-    it('returns the correct homonymy for a given name', () => {
-      expect(getHomonymy('guillermo', 'del toro', 'gomez')).toBe('MG')
-    })
-  })
+  /**
+   * REGLA 10ª.
+   * Cuando aparezcan formando parte del nombre, apellido paterno y apellido materno los caracteres especiales, éstos deben de excluirse para el cálculo del homónimo y del dígito verificador. Los caracteres se interpretarán, sí y sólo si, están en forma individual dentro del nombre, apellido paterno y apellido materno
+   */
+  describe('rule 10', () => {
+    it('removes special characters', () => {
+      const specialCharsRfc1 = calculateMexicanRFC(specialCharsCase1)
+      const specialCharsRfc2 = calculateMexicanRFC(specialCharsCase2)
 
-  describe('getVerificationCode', () => {
-    it('returns the correct verification code for a given RFC', () => {
-      expect(getVerificationCode('TOGG641009MG')).toBe('A')
+      expect(specialCharsRfc1).toMatch(/^OACR661121/)
+      expect(specialCharsRfc2).toMatch(/^DAFR710108/)
     })
   })
 })

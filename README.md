@@ -70,8 +70,8 @@ This README's structure is based off [Best-README-Template](https://github.com/o
 
 ## Roadmap
 
-- [ ] Add tests for all SAT rules
-- [ ] Validate input birthdate format
+- [x] Add tests for all SAT rules
+- [x] Validate input birthdate format
 
 See the [open issues](https://github.com/vestfi/calculate-rfc/issues) for a full list of proposed features (and known issues).
 
