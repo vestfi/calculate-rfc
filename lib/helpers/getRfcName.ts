@@ -1,11 +1,12 @@
-import { forbiddenWordsString, vowels } from '../constants'
+import { LAST_NAME_ERROR } from '../constants/errors'
+import { forbiddenWordsString, vowels } from '../constants/rules'
 
 /** Generates the RFC's first four characters based on full name */
 export const getRfcName = (name: string, patronymic = '', matronymic = '') => {
   const noLastNames = !patronymic.length && !matronymic.length
 
   if (noLastNames) {
-    throw Error('NEEDS_ONE_LAST_NAME')
+    throw Error(LAST_NAME_ERROR)
   }
 
   const hasBothLastNames = matronymic.length && patronymic.length

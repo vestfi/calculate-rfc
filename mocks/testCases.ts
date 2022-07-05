@@ -15,9 +15,9 @@ export const case2 = {
   name: 'Eva',
   patronymic: 'Iriarte',
   matronymic: 'Méndez',
-  month: '11',
+  month: 11,
   day: '17',
-  year: '69',
+  year: 69,
 } as const
 
 export const simpleCharsCase1 = {
@@ -25,7 +25,7 @@ export const simpleCharsCase1 = {
   patronymic: 'Chávez',
   matronymic: 'González',
   month: '6',
-  day: '18',
+  day: 18,
   year: '24',
 } as const
 
@@ -35,7 +35,7 @@ export const simpleCharsCase2 = {
   matronymic: 'Llamas',
   month: '2',
   day: '28',
-  year: '1945',
+  year: 1945,
 } as const
 
 export const shortLastNameCase1 = {
@@ -43,7 +43,7 @@ export const shortLastNameCase1 = {
   patronymic: 'de la O',
   matronymic: 'Lozano',
   month: '12',
-  day: '1',
+  day: 1,
   year: '1940',
 } as const
 
@@ -112,25 +112,25 @@ export const prepositionCase1 = {
   name: 'Carmen',
   patronymic: 'de la Peña',
   matronymic: 'Ramírez',
-  month: '12',
-  day: '1',
-  year: '63',
+  month: 12,
+  day: 1,
+  year: 63,
 } as const
 
 export const prepositionCase2 = {
   name: 'Mario',
   patronymic: 'Sánchez',
   matronymic: 'de los Cobos',
-  month: '11',
-  day: '10',
-  year: '70',
+  month: 11,
+  day: 10,
+  year: 70,
 } as const
 
 export const specialCharsCase1 = {
   name: 'Roberto',
   patronymic: 'O’farril',
   matronymic: 'Carballo',
-  month: '11',
+  month: 11,
   day: '21',
   year: '66',
 } as const
@@ -143,3 +143,12 @@ export const specialCharsCase2 = {
   day: '08',
   year: '71',
 } as const
+
+export const homoclaveCase = {
+  patronymic: 'Gómez',
+  matronymic: 'Díaz',
+  name: 'Emma',
+  year: 56,
+  month: 12,
+  day: 31,
+}

@@ -4,7 +4,7 @@ import {
   HOMONYMY_DIVISION_FACTOR,
   homonymChart,
   HomonymKey,
-} from '../constants'
+} from '../constants/rules'
 
 /** Generates the first two characters of the "homoclave" */
 export const getHomonymy = (

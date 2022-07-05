@@ -46,8 +46,8 @@ Usage:
 ```ts
 const rfc = calculateMexicanRFC({
   name: 'Guillermo',
-  patronymic: 'Del Toro',
-  matronymic: 'Gómez',
+  patronymic: 'Del Toro', // name derived from a name of a father or ancestor
+  matronymic: 'Gómez', // name derived from a name of a mother or ancestor
   year: '64',
   month: '10',
   day: '09',
@@ -55,6 +55,9 @@ const rfc = calculateMexicanRFC({
 
 console.log(rfc) // TOGG641009MGA
 ```
+
+**Note:** Names in Mexico usually have two last names ordered as `name(s) patronymic matronymic`, however, **names with a single last name are also valid**.
+In order to get an accurate result, the full name should match the one registered with SAT.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -71,7 +74,7 @@ This README's structure is based off [Best-README-Template](https://github.com/o
 ## Roadmap
 
 - [x] Add tests for all SAT rules
-- [x] Validate input birthdate format
+- [x] Validate input
 
 See the [open issues](https://github.com/vestfi/calculate-rfc/issues) for a full list of proposed features (and known issues).
 

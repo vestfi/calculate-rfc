@@ -3,38 +3,12 @@ import {
   Diacritic,
   wordsToFilter,
   composedCharactersMap,
-} from '../constants'
+} from '../constants/rules'
 
 export { getVerificationCode } from './getVerificationCode'
 export { getRfcName } from './getRfcName'
 export { getHomonymy } from './getHomonymy'
-
-/**
- * Transforms the birthdate into yymmdd.
- * Adds a leading 0 to month and day and keeps only the last two digits of the year
- * @returns yymmdd date
- */
-export const getRfcBirthdate = ({
-  year,
-  month,
-  day,
-}: {
-  /** year of birth in format yy */
-  year: string | number
-  /** month of birth in format mm */
-  month: string | number
-  /** day of birth in format dd */
-  day: string | number
-}) => {
-  const yy = `${year}`.slice(-2)
-  const mm = addPadding(`${month}`)
-  const dd = addPadding(`${day}`)
-  return `${yy}${mm}${dd}`
-}
-
-/** Prepends a string number with a 0 when it has a single character */
-const addPadding = (stringNumber: string) =>
-  stringNumber.length === 1 ? `0${stringNumber}` : stringNumber
+export { getRfcBirthdate } from './getRfcBirthdate'
 
 /** Replaces diacritic vowels with a regular version */
 export const replaceDiacritics = (text = '') =>

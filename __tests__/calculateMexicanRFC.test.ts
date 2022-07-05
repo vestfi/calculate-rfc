@@ -4,7 +4,7 @@
  */
 import { describe, it, test, expect } from 'vitest'
 
-import { forbiddenWordsString } from '../lib/constants'
+import { forbiddenWordsString } from '../lib/constants/rules'
 import { forbiddenWordCases } from '../mocks/forbiddenWordCases'
 import {
   case1,
@@ -23,13 +23,42 @@ import {
   prepositionCase2,
   specialCharsCase1,
   specialCharsCase2,
+  homoclaveCase,
 } from '../mocks/testCases'
 
 import { calculateMexicanRFC } from '../lib/main'
+import { LAST_NAME_ERROR, MISSING_DATE_ERROR } from '../lib/constants/errors'
 
 describe('calculateMexicanRFC', () => {
   const rfc1 = calculateMexicanRFC(case1)
   const rfc2 = calculateMexicanRFC(case2)
+
+  it('throws if no last name is included', () => {
+    expect(() =>
+      calculateMexicanRFC({ ...case1, matronymic: '', patronymic: undefined }),
+    ).toThrowError(LAST_NAME_ERROR)
+  })
+
+  it.only('throws if date is missing any parts', () => {
+    expect(() =>
+      calculateMexicanRFC({ ...case1, day: 0, month: 1, year: 98 }),
+    ).toThrowError(MISSING_DATE_ERROR)
+    expect(() =>
+      calculateMexicanRFC({ ...case1, day: '1', month: '0', year: 98 }),
+    ).toThrowError(MISSING_DATE_ERROR)
+    expect(() =>
+      calculateMexicanRFC({ ...case1, day: '1', month: 1, year: '00000' }),
+    ).toThrowError(MISSING_DATE_ERROR)
+    expect(() =>
+      calculateMexicanRFC({ ...case1, day: '', month: 1, year: 98 }),
+    ).toThrowError(MISSING_DATE_ERROR)
+    expect(() =>
+      calculateMexicanRFC({ ...case1, day: '1', month: '', year: 98 }),
+    ).toThrowError(MISSING_DATE_ERROR)
+    expect(() =>
+      calculateMexicanRFC({ ...case1, day: '1', month: 1, year: '' }),
+    ).toThrowError(MISSING_DATE_ERROR)
+  })
 
   /**
    * REGLA 1ª.
@@ -196,14 +225,7 @@ describe('calculateMexicanRFC', () => {
   })
 
   describe('calculates the three characters of the homoclave correctly', () => {
-    const homoclave = calculateMexicanRFC({
-      patronymic: 'Gómez',
-      matronymic: 'Díaz',
-      name: 'Emma',
-      year: 56,
-      month: 12,
-      day: 31,
-    }).slice(-3)
+    const homoclave = calculateMexicanRFC(homoclaveCase).slice(-3)
 
     it('calculates the homonymy correctly (first two characters after the date)', () => {
       expect(homoclave.charAt(0)).toBe('G')

@@ -3,7 +3,7 @@ import {
   VerificationNumberKey,
   verificationNumberChart,
   VERIFICATION_CODE_STARTING_INDEX,
-} from '../constants'
+} from '../constants/rules'
 
 /** Calculates the "homoclave" verification code based on the RFC without the last digit (name + date + homonymy) */
 export const getVerificationCode = (
