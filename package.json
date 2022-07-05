@@ -23,6 +23,6 @@
     "vitest": "^0.16.0"
   },
   "lint-staged": {
-    "*.{js,css,md}": "prettier --write"
+    "*.{js,css,md,ts}": "prettier --write"
   }
 }
