@@ -1,7 +1,7 @@
 {
   "name": "calculate-rfc",
   "repository": "git://github.com/vestfi/calculate-rfc.git",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "files": [
     "dist"
   ],
