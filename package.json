@@ -1,7 +1,7 @@
 {
   "name": "calculate-rfc",
-  "private": true,
-  "version": "0.0.0",
+  "repository": "git://github.com/vestfi/calculate-rfc.git",
+  "version": "0.0.1",
   "files": [
     "dist/calculateRfc.es.js",
     "dist/calculateRfc.umd.js"
