@@ -1,7 +1,7 @@
 {
   "name": "calculate-rfc",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "files": [
     "dist/calculateRfc.es.js",
     "dist/calculateRfc.umd.js"
