@@ -1,150 +1,31 @@
+/** Rules defined here can be found in the RFC specifications.
+ * They can be downloaded from ["Plataforma Nacional de Transparencia"](https://www.infomex.org.mx/gobiernofederal/moduloPublico/moduloPublico.action)
+ * with the folio: `0610100135506`
+ */
 import { describe, it, test, expect } from 'vitest'
+
 import { forbiddenWordsString } from '../lib/constants'
+import { forbiddenWordCases } from '../mocks/forbiddenWordCases'
+import {
+  case1,
+  case2,
+  simpleCharsCase1,
+  simpleCharsCase2,
+  shortLastNameCase1,
+  shortLastNameCase2,
+  composedLastNameCase1,
+  composedLastNameCase2,
+  composedNameCase1,
+  composedNameCase2,
+  singleLastNameCase1,
+  singleLastNameCase2,
+  prepositionCase1,
+  prepositionCase2,
+  specialCharsCase1,
+  specialCharsCase2,
+} from '../mocks/testCases'
 
 import { calculateMexicanRFC } from '../lib/main'
-import { forbiddenWordCases } from '../mocks/forbiddenWordCases'
-
-const case1 = {
-  name: 'Juan',
-  patronymic: 'Barrios',
-  matronymic: 'Fernández',
-  month: '12',
-  day: '13',
-  year: '1970',
-} as const
-
-const case2 = {
-  name: 'Eva',
-  patronymic: 'Iriarte',
-  matronymic: 'Méndez',
-  month: '11',
-  day: '17',
-  year: '69',
-} as const
-
-const simpleCharsCase1 = {
-  name: 'Manuel',
-  patronymic: 'Chávez',
-  matronymic: 'González',
-  month: '6',
-  day: '18',
-  year: '24',
-} as const
-
-const simpleCharsCase2 = {
-  name: 'Felipe',
-  patronymic: 'Camargo',
-  matronymic: 'Llamas',
-  month: '2',
-  day: '28',
-  year: '1945',
-} as const
-
-const shortLastNameCase1 = {
-  name: 'Alvaro',
-  patronymic: 'de la O',
-  matronymic: 'Lozano',
-  month: '12',
-  day: '1',
-  year: '1940',
-} as const
-
-const shortLastNameCase2 = {
-  name: 'Ernesto',
-  patronymic: 'Ek',
-  matronymic: 'Rivera',
-  month: '11',
-  day: '20',
-  year: '07',
-} as const
-
-const composedLastNameCase1 = {
-  name: 'Dolores',
-  patronymic: 'San Martín',
-  matronymic: 'Dávalos',
-  month: '08',
-  day: '12',
-  year: '18',
-} as const
-
-const composedLastNameCase2 = {
-  name: 'Mario',
-  patronymic: 'Sánchez de la Barquera',
-  matronymic: 'Gómez',
-  month: '2',
-  day: '24',
-  year: '19',
-} as const
-
-const composedNameCase1 = {
-  name: 'Luz María',
-  patronymic: 'Fernández',
-  matronymic: 'Juárez',
-  month: '2',
-  day: '5',
-  year: '20',
-} as const
-
-const composedNameCase2 = {
-  name: 'José Antonio',
-  patronymic: 'Camargo ',
-  matronymic: 'Hernández',
-  month: '12',
-  day: '18',
-  year: '21',
-} as const
-
-const singleLastNameCase1 = {
-  name: 'Juan',
-  patronymic: 'Martínez ',
-  month: '1',
-  day: '16',
-  year: '42',
-} as const
-
-const singleLastNameCase2 = {
-  name: 'Gerardo',
-  matronymic: 'Zafra',
-  month: '11',
-  day: '15',
-  year: '25',
-} as const
-
-const prepositionCase1 = {
-  name: 'Carmen',
-  patronymic: 'de la Peña',
-  matronymic: 'Ramírez',
-  month: '12',
-  day: '1',
-  year: '63',
-} as const
-
-const prepositionCase2 = {
-  name: 'Mario',
-  patronymic: 'Sánchez',
-  matronymic: 'de los Cobos',
-  month: '11',
-  day: '10',
-  year: '70',
-} as const
-
-const specialCharsCase1 = {
-  name: 'Roberto',
-  patronymic: 'O’farril',
-  matronymic: 'Carballo',
-  month: '11',
-  day: '21',
-  year: '66',
-} as const
-
-const specialCharsCase2 = {
-  name: 'Rubén',
-  patronymic: 'D’angelo',
-  matronymic: 'Fargo',
-  month: '1',
-  day: '08',
-  year: '71',
-} as const
 
 describe('calculateMexicanRFC', () => {
   const rfc1 = calculateMexicanRFC(case1)
