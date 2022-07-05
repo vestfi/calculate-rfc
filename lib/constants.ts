@@ -1,3 +1,7 @@
+/** Rules and test cases used here can be found in the RFC specifications under section "2.2 Personas Físicas"
+ * It can be downloaded from ["Plataforma Nacional de Transparencia"](https://www.infomex.org.mx/gobiernofederal/moduloPublico/moduloPublico.action)
+ * with the folio: `0610100135506`
+ */
 export const diacriticMap = {
   á: 'a',
   é: 'e',
@@ -7,6 +11,9 @@ export const diacriticMap = {
 }
 export type Diacritic = keyof typeof diacriticMap
 export const vowels = 'aeiou'
+
+export const VERIFICATION_CODE_DIVIDING_FACTOR = 11
+export const VERIFICATION_CODE_STARTING_INDEX = 13
 
 export const wordsToFilter = [
   '.',
@@ -161,5 +168,3 @@ export const verificationNumberChart = {
   Ñ: '38',
 }
 export type VerificationNumberKey = keyof typeof verificationNumberChart
-export const VERIFICATION_CODE_DIVIDING_FACTOR = 11
-export const VERIFICATION_CODE_STARTING_INDEX = 13

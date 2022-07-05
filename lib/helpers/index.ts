@@ -20,15 +20,15 @@ export const getRfcBirthdate = ({
   day,
 }: {
   /** year of birth in format yy */
-  year: string
+  year: string | number
   /** month of birth in format mm */
-  month: string
+  month: string | number
   /** day of birth in format dd */
-  day: string
+  day: string | number
 }) => {
-  const yy = year.slice(-2)
-  const mm = addPadding(month)
-  const dd = addPadding(day)
+  const yy = `${year}`.slice(-2)
+  const mm = addPadding(`${month}`)
+  const dd = addPadding(`${day}`)
   return `${yy}${mm}${dd}`
 }
 

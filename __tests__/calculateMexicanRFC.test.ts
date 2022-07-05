@@ -1,5 +1,5 @@
-/** Rules defined here can be found in the RFC specifications.
- * They can be downloaded from ["Plataforma Nacional de Transparencia"](https://www.infomex.org.mx/gobiernofederal/moduloPublico/moduloPublico.action)
+/** Rules and test cases used here can be found in the RFC specifications under section "2.2 Personas Físicas"
+ * It can be downloaded from ["Plataforma Nacional de Transparencia"](https://www.infomex.org.mx/gobiernofederal/moduloPublico/moduloPublico.action)
  * with the folio: `0610100135506`
  */
 import { describe, it, test, expect } from 'vitest'
@@ -192,6 +192,26 @@ describe('calculateMexicanRFC', () => {
 
       expect(specialCharsRfc1).toMatch(/^OACR661121/)
       expect(specialCharsRfc2).toMatch(/^DAFR710108/)
+    })
+  })
+
+  describe('calculates the three characters of the homoclave correctly', () => {
+    const homoclave = calculateMexicanRFC({
+      patronymic: 'Gómez',
+      matronymic: 'Díaz',
+      name: 'Emma',
+      year: 56,
+      month: 12,
+      day: 31,
+    }).slice(-3)
+
+    it('calculates the homonymy correctly (first two characters after the date)', () => {
+      expect(homoclave.charAt(0)).toBe('G')
+      expect(homoclave.charAt(1)).toBe('R')
+    })
+
+    it('calculates the verification code correctly (last character)', () => {
+      expect(homoclave.charAt(2)).toBe('8')
     })
   })
 })

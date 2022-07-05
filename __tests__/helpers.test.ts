@@ -16,9 +16,9 @@ describe('helpers', () => {
   describe('getRfcBirthdate', () => {
     it('should transform the KYC birthdate to the RFC format', () => {
       const rfcBirthdate = getRfcBirthdate({
+        year: '64',
         month: '10',
         day: '09',
-        year: '64',
       })
       expect(rfcBirthdate).toBe('641009')
     })
@@ -97,6 +97,12 @@ describe('helpers', () => {
   describe('getHomonymy', () => {
     it('returns the correct homonymy for a given name', () => {
       expect(getHomonymy('guillermo', 'del toro', 'gomez')).toBe('MG')
+    })
+  })
+
+  describe('getVerificationCode', () => {
+    it('returns the correct verification code for a given RFC', () => {
+      expect(getVerificationCode('TOGG641009MG')).toBe('A')
     })
   })
 

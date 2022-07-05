@@ -1,3 +1,7 @@
+/** Rules and test cases used here can be found in the RFC specifications under section "2.2 Personas Físicas"
+ * It can be downloaded from ["Plataforma Nacional de Transparencia"](https://www.infomex.org.mx/gobiernofederal/moduloPublico/moduloPublico.action)
+ * with the folio: `0610100135506`
+ */
 export const case1 = {
   name: 'Juan',
   patronymic: 'Barrios',
