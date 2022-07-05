@@ -3,8 +3,7 @@
   "repository": "git://github.com/vestfi/calculate-rfc.git",
   "version": "0.0.1",
   "files": [
-    "dist/calculateRfc.es.js",
-    "dist/calculateRfc.umd.js"
+    "dist"
   ],
   "scripts": {
     "dev": "vite",
@@ -20,6 +19,7 @@
     "prettier": "^2.7.1",
     "typescript": "^4.5.4",
     "vite": "^2.9.9",
+    "vite-plugin-dts": "^1.2.1",
     "vitest": "^0.16.0"
   },
   "lint-staged": {
