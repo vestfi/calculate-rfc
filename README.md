@@ -16,13 +16,13 @@ This project calculates a "Persona Física"'s RFC based on SAT's specifications 
 Yarn:
 
 ```sh
-yarn add @vestfi/calculate-rfc
+yarn add calculate-rfc
 ```
 
 NPM:
 
 ```sh
-npm install @vestfi/calculate-rfc
+npm install calculate-rfc
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
