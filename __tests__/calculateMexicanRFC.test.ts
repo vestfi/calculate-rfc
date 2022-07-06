@@ -39,7 +39,7 @@ describe('calculateMexicanRFC', () => {
     ).toThrowError(LAST_NAME_ERROR)
   })
 
-  it.only('throws if date is missing any parts', () => {
+  it('throws if date is missing any parts', () => {
     expect(() =>
       calculateMexicanRFC({ ...case1, day: 0, month: 1, year: 98 }),
     ).toThrowError(MISSING_DATE_ERROR)
