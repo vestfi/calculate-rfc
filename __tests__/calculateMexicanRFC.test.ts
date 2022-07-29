@@ -60,6 +60,19 @@ describe('calculateMexicanRFC', () => {
     ).toThrowError(MISSING_DATE_ERROR)
   })
 
+  it('trims input values correctly', () => {
+    const appendEmptySpace = (str: string) => `      ${str}         `
+    const rfc = calculateMexicanRFC(
+      Object.keys(simpleCharsCase1).reduce((acc, key) => {
+        return {
+          ...acc,
+          [key]: appendEmptySpace(simpleCharsCase1[key]),
+        }
+      }, {} as typeof simpleCharsCase1),
+    )
+    expect(rfc).toMatch(/^CAGM240618/)
+  })
+
   /**
    * REGLA 1ª.
    * Se integra la clave con los siguientes datos:

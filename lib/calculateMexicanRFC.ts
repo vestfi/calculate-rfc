@@ -5,11 +5,12 @@ import {
   replaceDiacritics,
   getHomonymy,
   getRfcName,
+  trimObjectValues,
 } from './helpers'
 
 import { getRfcBirthdate, GetRfcBirthDate } from './helpers/getRfcBirthdate'
 
-type CalculateMexicanRFC = GetRfcBirthDate & {
+export type CalculateMexicanRFC = GetRfcBirthDate & {
   /** Name (including second name) */
   name: string
   /** Name derived from the father */
@@ -28,15 +29,11 @@ export function calculateMexicanRFC(
 export function calculateMexicanRFC(
   input: CalculateMexicanRFC & { matronymic: string; patronymic: string },
 ): string
-export function calculateMexicanRFC({
-  name,
-  patronymic,
-  matronymic,
-  year,
-  month,
-  day,
-}: CalculateMexicanRFC) {
-  if (!patronymic?.trim() && !matronymic?.trim()) {
+export function calculateMexicanRFC(input: CalculateMexicanRFC) {
+  const { name, patronymic, matronymic, year, month, day } =
+    trimObjectValues(input)
+
+  if (!patronymic && !matronymic) {
     throw Error(LAST_NAME_ERROR)
   }
 

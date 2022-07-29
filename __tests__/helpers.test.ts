@@ -10,6 +10,7 @@ import {
   getVerificationCode,
   replaceDiacritics,
   simplifyComposedCharacters,
+  trimObjectValues,
 } from '../lib/helpers'
 
 describe('helpers', () => {
@@ -109,6 +110,18 @@ describe('helpers', () => {
   describe('getVerificationCode', () => {
     it('returns the correct verification code for a given RFC', () => {
       expect(getVerificationCode('TOGG641009MG')).toBe('A')
+    })
+  })
+
+  describe('trimObjectValues', () => {
+    it('returns a copy the input object with all strings trimmed', () => {
+      expect(
+        trimObjectValues({
+          first: '    1       ',
+          second: 2,
+          third: '     third           ',
+        }),
+      ).toStrictEqual({ first: '1', second: 2, third: 'third' })
     })
   })
 })

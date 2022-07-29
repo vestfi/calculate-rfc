@@ -43,3 +43,12 @@ export const simplifyComposedCharacters = (text: string) => {
   )
   return simpleText
 }
+
+/** Returns a shallow copy of an object with trimmed string values */
+export const trimObjectValues = <K extends {}>(input: K) => {
+  const inputEntries = Object.entries(input).map(([key, value]) => [
+    key,
+    typeof value === 'string' ? value.trim() : value,
+  ])
+  return Object.fromEntries(inputEntries)
+}
